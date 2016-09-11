@@ -1,7 +1,27 @@
 #!/bin/bash
 
+function help {
+	echo "getip 1.1"
+	echo "	Usage: getip [action] [option]"
+	echo " "
+	echo "  getip gives the current private or public IP which is using your host"
+	echo "  action could be:"
+	echo "     public   > public IP assigned by your ISP to your modem for internet connection"
+	echo "     private  > private IP in your local network"
+	echo "     help     > prints this message and exit"
+	echo " "
+	echo " Version 1.1 (12-sep-2016): - Added help message"
+	echo "                            - Added default option showing both private, public IP's"
+	echo " "
+	echo "  Carlos Molina 2016"
+}
+
 if [[ $# = 0 ]]; then
-	echo "You must specify 'public' or 'private' IP"
+	echo "Public IP"
+	wget http://ipinfo.io/ip -qO -
+	echo "Private IP"
+	ip -4 -o addr show  | perl -lane 'print $F[3]'
+	exit
 fi
 
 if [[ $1 = "private" ]]; then
@@ -15,4 +35,7 @@ elif [[ $1 = "public" ]]; then
 	else
 		wget http://ipinfo.io/ip -qO -
 	fi
+elif [[ $1 = "help" ]]; then
+	help
+	exit
 fi
