@@ -4,17 +4,24 @@ FILE_HIST="$CFGDIR/public_ip_history"
 
 if [[ $# = 0 ]]; then
 	if [[ ! -f $FILE_HIST ]]; then
-			# Si no existe
-			mkdir -p $CFGDIR
-		fi
-		ip="`getip public`"
-		text="`date +"%Y%m%d %H%M"` $ip"
-		echo $text >> $FILE_HIST
-		echo "  $ip guardada en $FILE_HIST"
-	elif [[ $1 = "--list" || $1 = "-l" ]]; then
-		# Show saved IP's
-		cat $FILE_HIST
-	else
-		echo "$1: argumento invalido. Execution abort"
-		exit 1
+		# Si no existe
+		mkdir -p $CFGDIR
+		echo -e "date\ttime\tIP\tCity\tRegion\tCountry\tCoordinates" >> $FILE_HIST
+
+	fi
+	ip="`getip public`"
+	city="`getip public full |grep "city"|cut -d'"' -f4`"
+	region="`getip public full |grep "region"|cut -d'"' -f4`"
+	country="`getip public full |grep "country"|cut -d'"' -f4`"
+	loc="`getip public full |grep "loc"|cut -d'"' -f4`"
+
+	text="`date +"%Y%m%d %H%M"` $ip $city $region $country $loc"
+	echo $text >> $FILE_HIST
+	echo "  $ip guardada en $FILE_HIST"
+elif [[ $1 = "--list" || $1 = "-l" ]]; then
+	# Show saved IP's
+	cat $FILE_HIST
+else
+	echo -e "$1: argumento invalido. Execution abort\nPlease type -l (--list) for list the recorded IPs"
+	exit 1
 fi
