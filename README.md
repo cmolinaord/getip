@@ -1,2 +1,6 @@
 # getip
-Some commands to get the public or private IP with the option of save a list of publics IP given by yout ISP
+A bash command to get your public or private IP with the option of save a list
+of them in a file.
+
+For example you can use this software in order to monitor your public IP,
+which uses to be dynamically assigned by your ISP.
