@@ -58,6 +58,14 @@ if [[ $# = 0 ]]; then
 	ip=`echo $ip_string | cut -d" " -f2`
 	echo -e "  $ip"
 	exit
+=======
+CFGDIR="$HOME/.config/getip"
+FILE_HIST="$CFGDIR/public_ip_history"
+
+
+if [[ $# = 0 ]]; then
+	help
+>>>>>>> master
 fi
 
 if [[ $1 = "private" ]]; then
