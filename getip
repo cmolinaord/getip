@@ -1,7 +1,10 @@
 #!/bin/bash
+CFGDIR="$HOME/.config/getip"
+FILE_HIST="$CFGDIR/public_ip_history"
+
 
 if [[ $# = 0 ]]; then
-	echo "You must specify 'public' or 'private' IP"
+	help
 fi
 
 if [[ $1 = "private" ]]; then
