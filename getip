@@ -6,7 +6,7 @@ TMP_PUBLIC_IP="$RUNDIR/tmp_public_ip"
 
 function help {
 cat << HERE_DOC
-getip 1.2
+getip 1.2.1
 	Usage: getip [action] [option]
 
   'getip' gives your current private or public IP which is using your host
@@ -17,9 +17,9 @@ getip 1.2
      help      > prints this message and exit
 
   [Options]
->  '-r' used after 'public' or 'private', you will record the result in a file saved in ~/.config/getip
->  '-l' or '--list' used after 'public' or 'private' will show the historic results saved in  ~/.config/getip
->  '--full' used after 'public' will show more information (City, Country, ISP name)
+    '-f' or '--full'    used after 'public' will show more information (City, Country, ISP name)
+	  '-l' or '--list'    used after 'public' or 'private' will show the historic results saved in  ~/.config/getip
+    '-r' or '--record'  used after 'public' or 'private', you will record the result in a file saved in ~/.config/getip
 
  Version 1.1 (12-sep-2016): - Added help message
                             - Added default option showing both private, public IPs
@@ -27,6 +27,22 @@ getip 1.2
  														- Removed 'record_public_ip' script
  														- Added option of saving private IPs too
 														- Implemented a stronger method of get internal IP
+ Version 1.2.1 (02-dic-16)  - Help message improved
+ 														- Added long and short option strings for all functions
+
+  Carlos Molina 2016 (cmolina.ord@gmail.com)
+	https://github.com/cmolinaord/getip
+HERE_DOC
+}
+function short_help {
+cat << HERE_DOC
+getip 1.2.1
+	Usage: getip [action] [option]
+
+  [action]: public,private,help
+  [option]: -r --record
+            -l --list
+            -f --full
 
   Carlos Molina 2016 (cmolina.ord@gmail.com)
 	https://github.com/cmolinaord/getip
@@ -36,73 +52,64 @@ HERE_DOC
 function create_public_file {
 	mkdir -p $RUNDIR
 	if [[ ! -f $PUBLIC_HIST ]]; then
-		echo -e "date\ttime\tIP\tCity\tRegion\tCountry\tCoordinates" >> $PUBLIC_HIST
-		echo "*************************************" >> $PUBLIC_HIST
+		echo -e "date\ttime\tIP\t\tCity\t\t\t\tRegion\t\tCountry\tCoordinates" >> $PUBLIC_HIST
+		echo -e "*****\t*****\t***\t\t*****\t\t\t\t*******\t\t********\t**************" >> $PUBLIC_HIST
 	fi
 }
 function create_private_file {
 	mkdir -p $RUNDIR
 	if [[ ! -f $PRIVATE_HIST ]]; then
 		echo -e "date\ttime\tIP" >> $PRIVATE_HIST
-		echo "*************************************" >> $PUBLIC_HIST
+		echo -e "*****\t*****\t***" >> $PRIVATE_HIST
 fi
 }
 
-if [[ $# = 0 ]]; then
-	echo "*Public IP"
-	echo "  `wget http://ipinfo.io/ip -qO -`"
-
-	echo "*Private IP"
-	ip_string=`ifconfig | grep -A1 'UP.*BROADCAST.*RUNNING'|grep "inet"|sed 's/^ *//'`
-	# The ip_string contains "inet 192.168... netmask 255.255.255.0 broadcast 192...."
-	ip=`echo $ip_string | cut -d" " -f2`
-	echo -e "  $ip"
-	exit
-=======
-CFGDIR="$HOME/.config/getip"
-FILE_HIST="$CFGDIR/public_ip_history"
-
-
-if [[ $# = 0 ]]; then
-	help
-fi
+if [[ $# = 0 ]]; then short_help; fi
 
 if [[ $1 = "private" ]]; then
 ip_string=`ifconfig | grep -A1 'UP.*BROADCAST.*RUNNING'|grep "inet"|sed 's/^ *//'`
 # The ip_string contains "inet 192.168... netmask 255.255.255.0 broadcast 192...."
 ip=`echo $ip_string | cut -d" " -f2`
 # Get local network IP
-	if [[ $2 = "-r" ]]; then
+	if [[ $2 = "-r" || $2 = "--record" ]]; then
 		text="`date +"%Y%m%d %H%M"`\t$ip"
 		create_private_file
 		echo -e $text >> $PRIVATE_HIST
 		echo -e "  $ip saved in $PRIVATE_HIST"
-	elif [[ $2 = "--list" || $2 = "-l" ]];then
-		echo "Listing saved IP's in $PRIVATE_HIST"
-		cat $PRIVATE_HIST
+	elif [[ $2 = "-l" || $2 = "--list" ]];then
+		if [[ -f $PRIVATE_HIST ]];then
+			echo -e "Listing saved IP's in $PRIVATE_HIST\n"
+			cat $PRIVATE_HIST
+		else
+			echo "Nothing to list"
+		fi
 	else
-		echo -e "  $ip"
+		echo -e "$ip"
 	fi
 elif [[ $1 = "public" ]]; then
 	#Get publib IP
 	mkdir -p $RUNDIR
 	wget http://ipinfo.io/ -qO - > $TMP_PUBLIC_IP
 	cat $TMP_PUBLIC_IP |sed 's/{//'|sed 's/}//' | sed 's/^ //' > $TMP_PUBLIC_IP
-	if [[ $2 = "--full" ]]; then
+	if [[ $2 = "-f" || $2 = "--full" ]]; then
 		cat $TMP_PUBLIC_IP
-	elif [[ $2 = "-r" ]]; then
+	elif [[ $2 = "-r" || $2 = "--record" ]]; then
 		create_public_file
 		ip=`wget http://ipinfo.io/ip -qO -`
-		city="`cat $TMP_PUBLIC_IP |grep "city"|cut -d'"' -f4`"
-		region="`cat $TMP_PUBLIC_IP  |grep "region"|cut -d'"' -f4`"
-		country="`cat $TMP_PUBLIC_IP  |grep "country"|cut -d'"' -f4`"
-		loc="`cat $TMP_PUBLIC_IP  |grep "loc"|cut -d'"' -f4`"
+		city=`cat $TMP_PUBLIC_IP |grep "city"|cut -d'"' -f4`
+		region=`cat $TMP_PUBLIC_IP  |grep "region"|cut -d'"' -f4`
+		country=`cat $TMP_PUBLIC_IP  |grep "country"|cut -d'"' -f4`
+		loc=`cat $TMP_PUBLIC_IP  |grep "loc"|cut -d'"' -f4`
 		text="`date +"%Y%m%d %H%M"`\t$ip\t$city\t$region\t$country\t$loc"
-		echo $text >> $PUBLIC_HIST
-		echo "  $ip saved in $PUBLIC_HIST\n"
-	elif [[ $2 = "--list" || $2 = "-l" ]];then
-		echo "Listing saved IP's in $PUBLIC_HIST"
-		cat $PUBLIC_HIST
+		echo -e $text >> $PUBLIC_HIST
+		echo "  $ip saved in $PUBLIC_HIST"
+	elif [[ $2 = "-l" || $2 = "--list" ]];then
+		if [[ -f $PUBLIC_HIST ]];then
+			echo -e "Listing saved IP's in $PUBLIC_HIST\n"
+			cat $PUBLIC_HIST
+		else
+			echo "Nothing to list"
+		fi
 	else
 		wget http://ipinfo.io/ip -qO -
 	fi
