@@ -17,7 +17,6 @@ getip 1.2.1
      help      > prints this message and exit
 
   [Options]
-    '-f' or '--full'    used after 'public' will show more information (City, Country, ISP name)
 	  '-l' or '--list'    used after 'public' or 'private' will show the historic results saved in  ~/.config/getip
     '-r' or '--record'  used after 'public' or 'private', you will record the result in a file saved in ~/.config/getip
 
@@ -42,7 +41,6 @@ getip 1.2.1
   [action]: public,private,help
   [option]: -r --record
             -l --list
-            -f --full
 
   Carlos Molina 2016 (cmolina.ord@gmail.com)
 	https://github.com/cmolinaord/getip
@@ -91,9 +89,7 @@ elif [[ $1 = "public" ]]; then
 	mkdir -p $RUNDIR
 	wget http://ipinfo.io/ -qO - > $TMP_PUBLIC_IP
 	cat $TMP_PUBLIC_IP |sed 's/{//'|sed 's/}//' | sed 's/^ //' > $TMP_PUBLIC_IP
-	if [[ $2 = "-f" || $2 = "--full" ]]; then
-		cat $TMP_PUBLIC_IP
-	elif [[ $2 = "-r" || $2 = "--record" ]]; then
+	if [[ $2 = "-r" || $2 = "--record" ]]; then
 		create_public_file
 		ip=`wget http://ipinfo.io/ip -qO -`
 		city=`cat $TMP_PUBLIC_IP |grep "city"|cut -d'"' -f4`
