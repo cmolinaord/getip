@@ -109,7 +109,7 @@ elif [[ $1 = "public" ]]; then
 	else
 		wget http://ipinfo.io/ip -qO -
 	fi
-elif [[ $1 = "help" ]]; then
+elif [[ $1 = "help" || "-h" || "--help" ]]; then
 	help
 	exit
 fi
