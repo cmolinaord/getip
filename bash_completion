@@ -30,11 +30,11 @@ _getip() {
 	if [[ "${cur}" == - ]]; then
 		COMPREPLY=( $( compgen -W "-h --" -- ${cur}) )
 		return 0
-	elif [[ "${cur}" == -- ]]; then
-		COMPREPLY=( $( compgen -W "--help" -- ${cur}) )
+	elif [[ "${cur}" == --* ]]; then
+		COMPREPLY=( $( compgen -W "--help --version" -- ${cur}) )
 		return 0
 	else
-		COMPREPLY=( $( compgen -W "${domain} -h" -- ${cur}) )
+		COMPREPLY=( $( compgen -W "${domain} -h -v" -- ${cur}) )
 		return 0
 	fi
 }

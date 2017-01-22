@@ -3,47 +3,56 @@ RUNDIR="$HOME/.config/getip"
 PUBLIC_HIST="$RUNDIR/public_ip_history"
 PRIVATE_HIST="$RUNDIR/private_ip_history"
 TMP_PUBLIC_IP="$RUNDIR/tmp_public_ip"
+VERSION="1.3"
 
 function help {
 cat << HERE_DOC
-getip 1.2.1
-	Usage: getip [action] [option]
+getip $VERSION
+  Usage:
+    getip <domain> [<action>]
+    getip [option]
 
   'getip' gives your current private or public IP which is using your host
 
-  [action] could be:
-     public    > public IP assigned by your ISP to your modem for internet connection
-     private   > private IP in your local network
-     help      > prints this message and exit
+  domain:
+     public:       public IP assigned by your ISP to your modem for internet connection
+     private:      private IP in your local network
 
-  [Options]
-	  '-l' or '--list'    used after 'public' or 'private' will show the historic results saved in  ~/.config/getip
-    '-r' or '--record'  used after 'public' or 'private', you will record the result in a file saved in ~/.config/getip
+  action:
+    -l --list    used after 'public' or 'private' will show the historic results saved in  ~/.config/getip
+    -r --record  used after 'public' or 'private', you will record the result in a file saved in ~/.config/getip
+
+    option:
+    help -h --help:   Shows help and exit
+    -v --version:     Shows version and exit
+
+*****************************
 
  Version 1.1 (12-sep-2016): - Added help message
                             - Added default option showing both private, public IPs
  Version 1.2 (13-nov-2016): - Merged functionallity of 'record_public_ip' script into 'getip'
- 														- Removed 'record_public_ip' script
- 														- Added option of saving private IPs too
-														- Implemented a stronger method of get internal IP
+                            - Removed 'record_public_ip' script
+                            - Added option of saving private IPs too
+                            - Implemented a stronger method of get internal IP
  Version 1.2.1 (02-dic-16)  - Help message improved
- 														- Added long and short option strings for all functions
+                            - Added long and short option strings for all functions
+ Version 1.3 (22-ene-17)    - Created Makefile for easy installation
+                            - Created bash-completion script
+                            - Added option to show version
 
   Carlos Molina 2016 (cmolina.ord@gmail.com)
-	https://github.com/cmolinaord/getip
+  https://github.com/cmolinaord/getip
 HERE_DOC
 }
 function short_help {
 cat << HERE_DOC
-getip 1.2.1
-	Usage: getip [action] [option]
+getip $VERSION
+  Usage:
+    getip <(public|private)> [[-r|--record]|[-l|--list]]
+    getip [-h|--help] [-v|--version]
 
-  [action]: public,private,help
-  [option]: -r --record
-            -l --list
-
-  Carlos Molina 2016 (cmolina.ord@gmail.com)
-	https://github.com/cmolinaord/getip
+  Carlos Molina 2017 (cmolina.ord@gmail.com)
+  https://github.com/cmolinaord/getip
 HERE_DOC
 }
 
@@ -109,7 +118,9 @@ elif [[ $1 = "public" ]]; then
 	else
 		wget http://ipinfo.io/ip -qO -
 	fi
-elif [[ $1 = "help" || "-h" || "--help" ]]; then
+elif [[ $1 = "help" || $1 = "-h" || $1 = "--help" ]]; then
 	help
 	exit
+elif [[ $1 = "-v" || $1 = "--version" ]]; then
+	echo $VERSION
 fi
