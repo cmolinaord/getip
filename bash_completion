@@ -1,0 +1,41 @@
+#
+# Bash completion script created for getip command
+# To be installed in "/usr/share/bash-completion/completions/"
+
+_getip() {
+	local prev cur domain cmd_opts
+	COMPREPLY=()
+
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
+	domain="public private"
+	cmd_opts="-r --record -l --list"
+
+	case "${prev}" in
+		public)
+			COMPREPLY=( $(compgen -W "$cmd_opts" -- ${cur}) )
+			return 0
+			;;
+		private)
+			COMPREPLY=( $(compgen -W "$cmd_opts" -- ${cur}) )
+			return 0
+			;;
+		help)
+		;;
+		*)
+		;;
+	esac
+
+	# Options
+	if [[ "${cur}" == - ]]; then
+		COMPREPLY=( $( compgen -W "-h --" -- ${cur}) )
+		return 0
+	elif [[ "${cur}" == -- ]]; then
+		COMPREPLY=( $( compgen -W "--help" -- ${cur}) )
+		return 0
+	else
+		COMPREPLY=( $( compgen -W "${domain} -h" -- ${cur}) )
+		return 0
+	fi
+}
+complete -F _getip getip
