@@ -9,6 +9,7 @@ Carlos Molina 2017 (cmolina.ord@gmail.com)
 https://github.com/cmolinaord/getip
 
 ## Help
+```
   Usage:
     getip <domain> [<action>]
     getip [option]
@@ -26,6 +27,7 @@ https://github.com/cmolinaord/getip
     option:
     help -h --help:   Shows help and exit
     -v --version:     Shows version and exit
+```
 
 ## Version history
 
