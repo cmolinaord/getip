@@ -40,7 +40,7 @@ getip $VERSION
                             - Created bash-completion script
                             - Added option to show version
 
-  Carlos Molina 2016 (cmolina.ord@gmail.com)
+  Carlos Molina 2017 (cmolina.ord@gmail.com)
   https://github.com/cmolinaord/getip
 HERE_DOC
 }
