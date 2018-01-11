@@ -6,7 +6,7 @@ all:
 
 install:
 	cp getip $(BIN_PATH)/getip
-	cp bash_completion /usr/share/bash-completion/completions/getip
+	cp bash_completion.sh /usr/share/bash-completion/completions/getip
 
 uninstall:
 	rm -f $(BIN_PATH)/getip
