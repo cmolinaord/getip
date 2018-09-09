@@ -48,3 +48,5 @@ https://github.com/cmolinaord/getip
   * Added option to show version
 * Version 1.3.1 (9-sep-18)
   * Added alternative names for *local* & *external* domains
+  * Corrected bug: everything matched in external case, not possible to access help or version cases
+  * Added last case for unmatched command
