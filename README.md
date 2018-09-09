@@ -5,7 +5,7 @@ of them in a file.
 For example you can use this software in order to monitor your public IP,
 which uses to be dynamically assigned by your ISP.
 
-Carlos Molina 2017 (cmolina.ord@gmail.com)
+Carlos Molina 2018 (cmolina.ord@gmail.com)
 https://github.com/cmolinaord/getip
 
 ## Help
@@ -17,8 +17,8 @@ https://github.com/cmolinaord/getip
   'getip' gives your current private or public IP which is using your host
 
   domain:
-     public:       public IP assigned by your ISP to your modem for internet connection
-     private:      private IP in your local network
+     public|external:    public IP assigned by your ISP to your modem for internet connection
+     private|local:      private IP in your local network
 
   action:
     -l --list    used after 'public' or 'private' will show the historic results saved in  ~/.config/getip
@@ -46,3 +46,5 @@ https://github.com/cmolinaord/getip
   * Created Makefile for easy installation
   * Created bash-completion script
   * Added option to show version
+* Version 1.3.1 (9-sep-18)
+  * Added alternative names for *local* & *external* domains
