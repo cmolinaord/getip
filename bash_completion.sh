@@ -12,11 +12,11 @@ _getip() {
 	cmd_opts="-r --record -l --list"
 
 	case "${prev}" in
-		public)
+		public|external)
 			COMPREPLY=( $(compgen -W "$cmd_opts" -- ${cur}) )
 			return 0
 			;;
-		private)
+		private|local)
 			COMPREPLY=( $(compgen -W "$cmd_opts" -- ${cur}) )
 			return 0
 			;;
