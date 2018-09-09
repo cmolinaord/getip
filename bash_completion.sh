@@ -8,7 +8,7 @@ _getip() {
 
 	cur="${COMP_WORDS[COMP_CWORD]}"
 	prev="${COMP_WORDS[COMP_CWORD-1]}"
-	domain="public private"
+	domain="public external private local"
 	cmd_opts="-r --record -l --list"
 
 	case "${prev}" in
